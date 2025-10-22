@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>I Miss You — Cute Card</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&family=Pacifico&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1:#FFF0F6;
+      --bg2:#FFF7ED;
+      --accent:#FF6B9A;
+      --soft:#FFDDE6;
+      --card:#ffffff;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:'Quicksand',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;}
+    body{
+      background: radial-gradient(circle at 10% 10%, var(--bg1), transparent 20%),
+                  radial-gradient(circle at 90% 90%, var(--bg2), transparent 20%),
+                  linear-gradient(135deg,#FFF7FA 0%, #FFFDF8 100%);
+      display:flex;align-items:center;justify-content:center;padding:24px;
+    }
+    .card{
+      width:100%;max-width:760px;background:linear-gradient(180deg,#ffffffcc, #fff);border-radius:20px;box-shadow:0 10px 30px rgba(14,14,25,0.08);padding:36px;display:grid;grid-template-columns:1fr 320px;gap:22px;align-items:center;
+    }
+    @media (max-width:760px){.card{grid-template-columns:1fr;max-width:420px;padding:28px}}
+
+    .left{padding:10px}
+    .logo{display:flex;gap:10px;align-items:center}
+    .logo .heart{width:48px;height:48px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),#FF9BC0);box-shadow:0 6px 20px rgba(255,107,154,0.18);}
+    .logo h4{margin:0;font-family:'Pacifico',cursive;color:#FF3D7A}
+
+    h1{font-size:42px;margin:14px 0 6px;line-height:1.02;color:#2b2730}
+    p.lead{margin:0 0 18px;color:#4b4450;opacity:0.9}
+
+    .message{
+      background:linear-gradient(180deg,#fff, #fff9f9);border-radius:14px;padding:18px;border:1px solid #ffeef4;box-shadow:0 6px 18px rgba(255,107,154,0.06);
+    }
+    .miss{display:flex;gap:12px;align-items:center}
+    .miss .big-heart{width:84px;height:84px;border-radius:18px;background:var(--soft);display:grid;place-items:center;font-size:36px;color:var(--accent);transform:translateY(0);animation:beat 1.2s infinite}
+    @keyframes beat{0%{transform:scale(1)}35%{transform:scale(1.12)}70%{transform:scale(1)}100%{transform:scale(1)}}
+
+    .text{font-size:20px}
+    .highlight{font-family:'Pacifico',cursive;font-size:34px;color:var(--accent);display:block}
+
+    .right{display:flex;flex-direction:column;align-items:center;gap:12px}
+    .note{width:100%;background:linear-gradient(180deg,#fff9fb,#fff);border-radius:12px;padding:16px;text-align:center;border:1px dashed #ffd6e8}
+    .btns{display:flex;gap:10px;margin-top:6px}
+    button{cursor:pointer;border:0;padding:10px 14px;border-radius:10px;font-weight:700}
+    .btn-send{background:linear-gradient(90deg,var(--accent),#FF9BC0);color:white;box-shadow:0 8px 20px rgba(255,107,154,0.18)}
+    .btn-copy{background:#fff;border:1px solid #ffe6f0;color:#ff476f}
+
+    .confetti{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+    .heart-emoji{position:absolute;font-size:20px;opacity:0.9}
+
+    footer{grid-column:1/-1;text-align:center;margin-top:6px;color:#8b8190;font-size:13px}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="left">
+      <div class="logo">
+        <div class="heart">❤️</div>
+        <h4>Little Note</h4>
+      </div>
+
+      <h1>Just so you know…</h1>
+      <p class="lead">A tiny page made to say what's on my mind. Cute, simple, and full of heart.</p>
+
+      <div class="message">
+        <div class="miss">
+          <div class="big-heart">💗</div>
+          <div class="text">
+            <span class="highlight">I miss you</span>
+            <div>Every little thing reminds me of you — your laugh, your jokes, the quiet moments. Counting the seconds till we meet again.</div>
+          </div>
+        </div>
+      </div>
+
+      <footer>Open this page and send it to someone sweet 💌</footer>
+    </div>
+
+    <div class="right">
+      <div class="note">
+        <div style="font-weight:700;font-size:18px;margin-bottom:8px">Send this message</div>
+        <div style="font-size:14px;opacity:0.95;margin-bottom:8px">Click to copy the note and paste it in a message.</div>
+        <div class="btns">
+          <button class="btn-send" id="sendBtn">Copy & Celebrate</button>
+          <button class="btn-copy" id="surpriseBtn">Surprise Me</button>
+        </div>
+      </div>
+
+      <div style="text-align:center;font-size:13px;color:#7d7180">Tip: Save as an HTML file and open in your browser.</div>
+    </div>
+
+    <div class="confetti" id="confetti"></div>
+  </div>
+
+  <script>
+    const noteText = "I miss you — every little thing reminds me of you. Can't wait to see you again. 💖";
+    document.getElementById('sendBtn').addEventListener('click', async ()=>{
+      try{
+        await navigator.clipboard.writeText(noteText);
+        spawnHearts(16);
+        const old = document.getElementById('sendBtn').textContent;
+        document.getElementById('sendBtn').textContent = 'Copied!';
+        setTimeout(()=>document.getElementById('sendBtn').textContent = old,1600);
+      }catch(e){alert('Copy failed — select the text and copy manually.')}
+    });
+
+    document.getElementById('surpriseBtn').addEventListener('click', ()=>{
+      spawnHearts(22);
+      alert("Surprise! \nYou just made someone's day brighter. 💕");
+    });
+
+    function spawnHearts(n){
+      const container = document.getElementById('confetti');
+      for(let i=0;i<n;i++){
+        const el = document.createElement('div');
+        el.className='heart-emoji';
+        el.textContent = Math.random()>0.5? '💗':'💖';
+        el.style.left = (Math.random()*100|0) + '%';
+        el.style.top = (Math.random()*40|0) + '%';
+        el.style.transform = 'translateY(0) scale(0.8)';
+        el.style.opacity = 0;
+        container.appendChild(el);
+        animate(el);
+      }
+      setTimeout(()=>{
+        // remove old hearts
+        const kids = container.querySelectorAll('.heart-emoji');
+        if(kids.length>80) for(let i=0;i<40;i++) kids[i].remove();
+      },4200);
+    }
+
+    function animate(el){
+      const dur = 2200 + Math.random()*1400;
+      el.animate([
+        {opacity:0, transform:'translateY(0) scale(0.6) rotate(0deg)'} ,
+        {opacity:1, transform:`translateY(${80+Math.random()*160}px) scale(1) rotate(${Math.random()*80-40}deg)`},
+        {opacity:0, transform:`translateY(${220+Math.random()*260}px) scale(0.6) rotate(${Math.random()*120-60}deg)`}
+      ],{duration:dur,easing:'cubic-bezier(.2,.7,.2,1)'});
+      setTimeout(()=>el.remove(),dur+60);
+    }
+  </script>
+</body>
+</html>
